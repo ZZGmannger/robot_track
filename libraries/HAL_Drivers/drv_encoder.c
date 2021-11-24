@@ -10,9 +10,8 @@
 
 #include "board.h"
 #include "drv_config.h"
-#ifdef RT_USING_PULSE_ENCODER
 
-#define BSP_USING_PULSE_ENCODER1
+#ifdef RT_USING_PULSE_ENCODER
 
 //#define DRV_DEBUG
 #define LOG_TAG             "drv.pulse_encoder"
@@ -93,11 +92,11 @@ rt_err_t pulse_encoder_init(struct rt_pulse_encoder_device *pulse_encoder)
     stm32_device->tim_handler.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
 
     sConfig.EncoderMode = TIM_ENCODERMODE_TI12;
-    sConfig.IC1Polarity = TIM_ICPOLARITY_RISING;
+    sConfig.IC1Polarity = TIM_ICPOLARITY_BOTHEDGE;
     sConfig.IC1Selection = TIM_ICSELECTION_DIRECTTI;
     sConfig.IC1Prescaler = TIM_ICPSC_DIV1;
     sConfig.IC1Filter = 3;
-    sConfig.IC2Polarity = TIM_ICPOLARITY_RISING;
+    sConfig.IC2Polarity = TIM_ICPOLARITY_BOTHEDGE;
     sConfig.IC2Selection = TIM_ICSELECTION_DIRECTTI;
     sConfig.IC2Prescaler = TIM_ICPSC_DIV1;
     sConfig.IC2Filter = 3;
@@ -228,7 +227,7 @@ void pulse_encoder_update_isr(struct stm32_pulse_encoder_device *device)
 
 #ifdef BSP_USING_PULSE_ENCODER1
 #if defined(SOC_SERIES_STM32F4)
-void TIM1_UP_TIM10_IRQHandler(void)
+void TIM5_IRQHandler(void)
 #elif defined(SOC_SERIES_STM32F1)
 void TIM1_UP_IRQHandler(void)
 #else
@@ -243,7 +242,7 @@ void TIM1_UP_IRQHandler(void)
 }
 #endif
 #ifdef BSP_USING_PULSE_ENCODER2
-void TIM2_IRQHandler(void)
+void TIM8_UP_TIM13_IRQHandler(void)
 {
     /* enter interrupt */
     rt_interrupt_enter();

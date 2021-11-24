@@ -21,8 +21,8 @@ extern "C" {
 #ifndef PULSE_ENCODER1_CONFIG
 #define PULSE_ENCODER1_CONFIG                          \
     {                                                  \
-       .tim_handler.Instance    = TIM1,                \
-       .encoder_irqn            = TIM1_UP_TIM10_IRQn,  \
+       .tim_handler.Instance    = TIM5,                \
+       .encoder_irqn            = TIM5_IRQn,           \
        .name                    = "pulse1"             \
     }
 #endif /* PULSE_ENCODER1_CONFIG */
@@ -32,8 +32,8 @@ extern "C" {
 #ifndef PULSE_ENCODER2_CONFIG
 #define PULSE_ENCODER2_CONFIG                          \
     {                                                  \
-       .tim_handler.Instance    = TIM2,                \
-       .encoder_irqn            = TIM2_IRQn,           \
+       .tim_handler.Instance    = TIM8,                \
+       .encoder_irqn            = TIM8_UP_TIM13_IRQn,  \
        .name                    = "pulse2"             \
     }
 #endif /* PULSE_ENCODER2_CONFIG */

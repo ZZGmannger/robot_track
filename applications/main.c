@@ -29,7 +29,6 @@ int main(void)
     rt_pin_mode(LED0_PIN, PIN_MODE_OUTPUT);
 
     LOG_D("main thread start %d", 100);
-    LOG_D("a+b = %d", add_all(10, 4));
 
     while (count++)
     {

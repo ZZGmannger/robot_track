@@ -362,6 +362,7 @@
 
 /* Board extended module Drivers */
 #define BSP_USING_PULSE_ENCODER1
+#define BSP_USING_PULSE_ENCODER2
 /* end of Hardware Drivers Config */
 
 #endif
