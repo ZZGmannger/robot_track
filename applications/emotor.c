@@ -24,6 +24,19 @@ rt_thread_t motor_speed_update_thread;
 void motor_speed_query_entry(void* param);
 void motor_speed_update_entry(void* param);
 
+
+typedef struct
+{
+    float kp;
+    float ki;
+    float kd;
+
+    int32_t err;
+    int32_t last_err;
+    int32_t prev_err;
+
+}algo_pid_t;
+
 typedef struct
 {
     struct rt_device *encode_dev;
@@ -32,6 +45,10 @@ typedef struct
     int16_t final_expect_speed;
     int8_t  acceleration;
     int16_t acc_expect_speed;
+
+    uint32_t Odometer;
+
+    algo_pid_t pid;
 }robot_motor_t;
 
 
@@ -62,7 +79,17 @@ int16_t motor_set_speed(robot_motor_t* motor , int16_t speed , int8_t acc)
     return motor->real_speed;
 }
 
-
+void motor_set_pid(robot_motor_t* motor , float kp , float ki , float kd)
+{
+    if(motor == RT_NULL)
+    {
+        LOG_E("motor set speed param err");
+        return;
+    }
+    motor->pid.kp = kp;
+    motor->pid.ki = ki;
+    motor->pid.kd = kd;
+}
 
 void motor_init(void)
 {
@@ -132,20 +159,44 @@ void dac_output(uint8_t ch ,int16_t value)
     }
 }
 
-int16_t cal_pid(int16_t real , int16_t expect)
+int16_t inc_pid(algo_pid_t* pid , int32_t real , int32_t expect)
 {
-    return 0;
+    int32_t inc;
+    if(pid == RT_NULL)
+    {
+        LOG_E("pid param err");
+        return 0;
+    }
+    pid->err = expect - real;
+
+    inc = pid->kp * (pid->err - pid->last_err) +
+             pid->ki * (pid->err)  +
+             pid->kd * (pid->err - 2*pid->last_err + pid->prev_err);
+
+    pid->last_err = pid->err;
+    pid->prev_err = pid->last_err;
+
+    return inc;
 }
+
 
 void motor_speed_update_entry(void* param)
 {
     uint16_t dac_left = 0;
     uint16_t dac_right = 0;
 
+    motor_left.pid.kp = 1;
+    motor_left.pid.ki = 0.1;
+    motor_left.pid.kp = 0;
+
+    motor_right.pid.kp = 1;
+    motor_right.pid.ki = 0.1;
+    motor_right.pid.kp = 0;
+
     while(1)
     {
-        dac_left  = cal_pid(motor_left.real_speed  ,  motor_left.final_expect_speed);
-        dac_right = cal_pid(motor_right.real_speed ,  motor_right.final_expect_speed);
+        dac_left  += inc_pid(&motor_left.pid  , motor_left.real_speed  ,  motor_left.final_expect_speed);
+        dac_right += inc_pid(&motor_right.pid , motor_right.real_speed ,  motor_right.final_expect_speed);
 
         dac_output(0 , dac_left);
         dac_output(1 , dac_right);
@@ -178,6 +229,5 @@ void motor_speed_acc_entry(void* param)
         rt_thread_mdelay(3);
     }
 }
-
 
 
