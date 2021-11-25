@@ -110,6 +110,9 @@
 
 #define RT_USING_DEVICE_IPC
 #define RT_PIPE_BUFSZ 512
+#define RT_USING_SYSTEM_WORKQUEUE
+#define RT_SYSTEM_WORKQUEUE_STACKSIZE 2048
+#define RT_SYSTEM_WORKQUEUE_PRIORITY 23
 #define RT_USING_SERIAL
 #define RT_USING_SERIAL_V1
 #define RT_SERIAL_USING_DMA
@@ -130,6 +133,8 @@
 #define RT_SFUD_USING_SFDP
 #define RT_SFUD_USING_FLASH_INFO_TABLE
 #define RT_SFUD_SPI_MAX_HZ 50000000
+#define RT_USING_SENSOR
+#define RT_USING_SENSOR_CMD
 #define RT_USING_PULSE_ENCODER
 
 /* Using USB */
@@ -148,11 +153,25 @@
 
 /* Socket abstraction layer */
 
+#define RT_USING_SAL
+#define SAL_INTERNET_CHECK
+
+/* protocol stack implement */
+
+#define SAL_USING_LWIP
+/* end of protocol stack implement */
+#define SAL_USING_POSIX
 /* end of Socket abstraction layer */
 
 /* Network interface device */
 
+#define RT_USING_NETDEV
+#define NETDEV_USING_IFCONFIG
 #define NETDEV_USING_PING
+#define NETDEV_USING_NETSTAT
+#define NETDEV_USING_AUTO_DEFAULT
+#define NETDEV_IPV4 1
+#define NETDEV_IPV6 0
 /* end of Network interface device */
 
 /* light weight TCP/IP stack */
@@ -256,6 +275,14 @@
 /* IoT Cloud */
 
 /* end of IoT Cloud */
+#define PKG_USING_TCPSERVER
+#define TCPSERVER_NAME "tcpserv"
+#define TCPSERVER_STACK_SIZE 4096
+#define TCPSERVER_PRIO 12
+#define TCPSERVER_SOCKET_MAX 512
+#define TCPSERVER_CLI_NUM 5
+#define PKG_TCPSERVER_SAMPLE
+#define PKG_USING_TCPSERVER_LATEST_VERSION
 /* end of IoT - internet of things */
 
 /* security packages */
@@ -298,7 +325,15 @@
 
 /* peripheral libraries and drivers */
 
+#define PKG_USING_SENSORS_DRIVERS
 #define PKG_USING_MPU6XXX
+#define PKG_USING_MPU6XXX_LATEST_VERSION
+#define PKG_USING_MPU6XXX_ACCE
+#define PKG_USING_MPU6XXX_GYRO
+#define PKG_USING_MPU6XXX_MAG
+#define PKG_USING_BMP180
+#define PKG_USING_BMP180_SAMPLE
+#define PKG_USING_BMP180_LATEST_VERSION
 /* end of peripheral libraries and drivers */
 
 /* AI packages */
@@ -361,8 +396,7 @@
 /* end of On-chip Peripheral Drivers */
 
 /* Board extended module Drivers */
-#define BSP_USING_PULSE_ENCODER1
-#define BSP_USING_PULSE_ENCODER2
+
 /* end of Hardware Drivers Config */
 
 #endif

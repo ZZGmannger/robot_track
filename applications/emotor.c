@@ -46,7 +46,7 @@ typedef struct
     int8_t  acceleration;
     int16_t acc_expect_speed;
 
-    uint32_t Odometer;
+    uint32_t odometer;
 
     algo_pid_t pid;
 }robot_motor_t;
